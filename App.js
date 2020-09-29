@@ -1,6 +1,8 @@
 import React from "react";
-import { StyleSheet, Platform, StatusBar } from "react-native";
-import WelcomeScreen from "./app/welcomeScreen";
+import { StyleSheet, Platform, StatusBar, View } from "react-native";
+import colors from "./app/config/colors";
+import ViewImageScreen from "./app/screens/ViewImageScreen";
+import WelcomeScreen from "./app/screens/WelcomeScreen";
 
 export default function App() {
   return <WelcomeScreen />;
@@ -9,9 +11,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    // justifyContent: "center",
+    backgroundColor: colors.black,
+    justifyContent: "center",
     alignItems: "center",
-    padding: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });
