@@ -1,11 +1,12 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View, StatusBar } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 
 function ViewImageScreen() {
   return (
     <View style={styles.container}>
+      <StatusBar hidden={true} translucent={true} />
       <View style={styles.closeIcon}>
         <MaterialCommunityIcons name="keyboard-backspace" size={50} />
       </View>
@@ -27,12 +28,11 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: colors.secondary,
     position: "absolute",
-    top: 40,
+    top: 50,
     left: 30,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 20,
-    borderRadius: 20,
+    borderRadius: 25,
   },
   container: {
     backgroundColor: colors.black,
@@ -43,10 +43,9 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: colors.primary,
     position: "absolute",
-    top: 40,
+    top: 50,
     right: 30,
-    elevation: 20,
-    borderRadius: 20,
+    borderRadius: 25,
   },
   image: {
     width: "100%",

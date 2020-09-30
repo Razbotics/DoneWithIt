@@ -3,6 +3,7 @@ import { StatusBar, Image, StyleSheet, View } from "react-native";
 import colors from "../config/colors";
 import Constants from "expo-constants";
 import AppText from "../components/AppText";
+import ListItem from "../components/ListItem";
 
 function ListingDetailsScreen() {
   return (
@@ -15,6 +16,13 @@ function ListingDetailsScreen() {
       <View style={styles.detailsContainer}>
         <AppText style={styles.title}>Denim Jacket</AppText>
         <AppText style={styles.price}>$100</AppText>
+      </View>
+      <View style={styles.userContainer}>
+        <ListItem
+          image={require("../assets/my-image.png")}
+          title="Shubhankar"
+          subTitle="5 Listings"
+        />
       </View>
     </View>
   );
@@ -39,7 +47,10 @@ const styles = StyleSheet.create({
     color: colors.secondary,
     fontWeight: "bold",
     fontSize: 18,
-    marginVertical: 10,
+    marginTop: 5,
+  },
+  userContainer: {
+    marginVertical: 30,
   },
 });
 
