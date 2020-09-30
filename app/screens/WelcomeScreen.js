@@ -22,7 +22,7 @@ const WelcomeScreen = () => {
           onPress={() => console.log("Login")}
         />
         <AppButton
-          title="Register"
+          title="Sign Up"
           color={colors.secondary}
           onPress={() => console.log("Register")}
         />
