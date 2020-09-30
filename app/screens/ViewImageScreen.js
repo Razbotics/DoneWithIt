@@ -1,24 +1,26 @@
 import React from "react";
-import { Image, StyleSheet, View, StatusBar } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
+import Screen from "./Screen";
 
 function ViewImageScreen() {
   return (
-    <View style={styles.container}>
-      <StatusBar hidden={true} translucent={true} />
-      <View style={styles.closeIcon}>
-        <MaterialCommunityIcons name="keyboard-backspace" size={50} />
+    <Screen>
+      <View style={styles.container}>
+        <View style={styles.closeIcon}>
+          <MaterialCommunityIcons name="keyboard-backspace" size={50} />
+        </View>
+        <View style={styles.deleteIcon}>
+          <MaterialCommunityIcons name="delete" size={50} />
+        </View>
+        <Image
+          resizeMode="contain"
+          style={styles.image}
+          source={require("../assets/chair.jpg")}
+        />
       </View>
-      <View style={styles.deleteIcon}>
-        <MaterialCommunityIcons name="delete" size={50} />
-      </View>
-      <Image
-        resizeMode="contain"
-        style={styles.image}
-        source={require("../assets/chair.jpg")}
-      />
-    </View>
+    </Screen>
   );
 }
 
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: colors.secondary,
     position: "absolute",
-    top: 50,
+    top: 30,
     left: 30,
     justifyContent: "center",
     alignItems: "center",
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: colors.primary,
     position: "absolute",
-    top: 50,
+    top: 30,
     right: 30,
     borderRadius: 25,
   },
