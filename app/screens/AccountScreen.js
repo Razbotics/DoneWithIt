@@ -24,7 +24,6 @@ const menuItems = [
 ];
 
 function MyAccountScreen({ image, name, email }) {
-  const iconSize = 40;
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
@@ -38,6 +37,7 @@ function MyAccountScreen({ image, name, email }) {
           renderItem={({ item }) => (
             <ListItem
               title={item.title}
+              onPress={() => {}}
               IconComponent={
                 <Icon
                   name={item.icon.name}
@@ -48,23 +48,23 @@ function MyAccountScreen({ image, name, email }) {
           )}
         />
       </View>
-
-      <ListItem
-        title="Logout"
-        IconComponent={
-          <Icon name="logout" size={iconSize} backgroundColor={colors.yellow} />
-        }
-      />
+      <View style={styles.container}>
+        <ListItem
+          title="Logout"
+          onPress={() => {}}
+          IconComponent={<Icon name="logout" backgroundColor={colors.yellow} />}
+        />
+      </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 30,
+    marginTop: 30,
   },
   screen: {
-    backgroundColor: colors.gray,
+    backgroundColor: colors.light,
   },
 });
 
