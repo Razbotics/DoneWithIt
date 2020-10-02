@@ -12,12 +12,19 @@ import AppText from "./AppText";
 import PickerItem from "./PickerItem";
 import { ListItemSeparator } from "./lists";
 
-function AppPicker({ icon, items, onSelectItem, placeholder, selectedItem }) {
+function AppPicker({
+  icon,
+  items,
+  onSelectItem,
+  placeholder,
+  selectedItem,
+  fieldWidth = "100%",
+}) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-        <View style={styles.container}>
+        <View style={[styles.container, { width: fieldWidth }]}>
           {icon && (
             <MaterialCommunityIcons
               name={icon}
@@ -26,9 +33,12 @@ function AppPicker({ icon, items, onSelectItem, placeholder, selectedItem }) {
               style={styles.icon}
             />
           )}
-          <AppText style={styles.text}>
-            {selectedItem ? selectedItem.label : placeholder}
-          </AppText>
+          {selectedItem ? (
+            <AppText style={styles.text}>{selectedItem.label}</AppText>
+          ) : (
+            <AppText style={styles.placeholder}>{placeholder}</AppText>
+          )}
+
           <MaterialCommunityIcons
             name="chevron-down"
             size={25}
@@ -71,7 +81,6 @@ const styles = StyleSheet.create({
     backgroundColor: defaultStyles.colors.light,
     flexDirection: "row",
     borderRadius: 25,
-    width: "100%",
     padding: 10,
     alignItems: "center",
     marginVertical: 10,
@@ -90,6 +99,10 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
+  },
+  placeholder: {
+    flex: 1,
+    color: defaultStyles.colors.medium,
   },
 });
 

@@ -30,7 +30,7 @@ function ListingEditScreen() {
         initialValues={{
           title: "",
           price: "",
-          category: "",
+          category: null,
           description: "",
         }}
         onSubmit={(values) => console.log(values)}
@@ -39,23 +39,34 @@ function ListingEditScreen() {
         <AppFormField
           name="title"
           icon="format-title"
+          maxLength={100}
           autoCorrect={false}
           autoCompleteType="off"
           placeholder="Title"
         />
         <AppFormField
           name="price"
+          maxLength={8}
+          fieldWidth="35%"
           icon="currency-usd"
           autoCompleteType="off"
-          keyboardType="number-pad"
+          keyboardType="numeric"
           placeholder="Price"
         />
-        <AppFormPicker name="category" categories={categories} />
+        <AppFormPicker
+          name="category"
+          categories={categories}
+          fieldWidth="50%"
+          placeholder="Category"
+        />
         <AppFormField
           name="description"
           icon="card-text-outline"
           autoCorrect={true}
-          placeholder="Description"
+          multiline
+          numberOfLines={3}
+          maxLength={255}
+          placeholder="Description ..."
         />
         <SubmitButton title="Post" />
       </AppForm>
