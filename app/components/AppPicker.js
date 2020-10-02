@@ -10,7 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import defaultStyles from "../config/styles";
 import AppText from "./AppText";
 import PickerItem from "./PickerItem";
-import ListItemSeparator from "./ListItemSeparator";
+import { ListItemSeparator } from "./lists";
 
 function AppPicker({ icon, items, onSelectItem, placeholder, selectedItem }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderRadius: 25,
     width: "100%",
-    padding: 15,
+    padding: 10,
     alignItems: "center",
     marginVertical: 10,
   },
