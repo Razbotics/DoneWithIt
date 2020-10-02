@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import Card from "../components/Card";
+import colors from "../config/colors";
 import Screen from "./Screen";
 
 const listings = [
@@ -48,6 +49,7 @@ function ListingsScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
+    backgroundColor: colors.light,
   },
 });
 

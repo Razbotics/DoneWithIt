@@ -8,30 +8,25 @@ import WelcomeScreen from "./app/screens/WelcomeScreen";
 import AppTextInput from "./app/components/AppTextInput";
 import Screen from "./app/screens/Screen";
 import AppPicker from "./app/components/AppPicker";
-
-const categories = [
-  { label: "Furniture", value: 1 },
-  { label: "Clothings", value: 2 },
-  { label: "Cameras", value: 3 },
-];
+import LoginScreen from "./app/screens/LoginScreen";
 
 export default function App() {
-  const [category, setCategory] = useState(categories[0]);
   return (
+    <LoginScreen />
     // <AccountScreen
     //   name="Shubhankar Das"
     //   email="razbotics@gmail.com"
     //   image={require("./app/assets/my-image.png")}
     // />
-    <Screen>
-      <AppPicker
-        selectedItem={category}
-        onSelectItem={(item) => setCategory(item)}
-        items={categories}
-        placeholder="Category"
-        icon="apps"
-      />
-      <AppTextInput placeholder="Email" icon="email" />
-    </Screen>
+    // <Screen>
+    //   <AppPicker
+    //     selectedItem={category}
+    //     onSelectItem={(item) => setCategory(item)}
+    //     items={categories}
+    //     placeholder="Category"
+    //     icon="apps"
+    //   />
+    //   <AppTextInput placeholder="Email" icon="email" />
+    // </Screen>
   );
 }
