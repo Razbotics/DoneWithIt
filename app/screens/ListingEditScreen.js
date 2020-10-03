@@ -9,40 +9,51 @@ import {
   SubmitButton,
   AppFormPicker,
 } from "../components/forms";
+import CategoryPickerItem from "../components/CategoryPickerItem";
 
 const categories = [
   {
     value: 1,
     label: "Furniture",
-    name: "floor-lamp",
+    iconName: "floor-lamp",
     backgroundColor: "#fc5c65",
   },
-  { value: 2, label: "Cars", name: "car", backgroundColor: "#fd9644" },
-  { value: 3, label: "Cameras", name: "camera", backgroundColor: "#fed330" },
-  { value: 4, label: "Games", name: "cards", backgroundColor: "#26de81" },
+  { value: 2, label: "Cars", iconName: "car", backgroundColor: "#fd9644" },
+  {
+    value: 3,
+    label: "Cameras",
+    iconName: "camera",
+    backgroundColor: "#fed330",
+  },
+  { value: 4, label: "Games", iconName: "cards", backgroundColor: "#26de81" },
   {
     value: 5,
     label: "Clothing",
-    name: "shoe-heel",
+    iconName: "shoe-heel",
     backgroundColor: "#2bcbba",
   },
-  { value: 6, label: "Sports", name: "basketball", backgroundColor: "#45aaf2" },
+  {
+    value: 6,
+    label: "Sports",
+    iconName: "basketball",
+    backgroundColor: "#45aaf2",
+  },
   {
     value: 7,
     label: "Movies & Music",
-    name: "headphones",
+    iconName: "headphones",
     backgroundColor: "#4b7bec",
   },
   {
     value: 8,
     label: "Books",
-    name: "book-open-variant",
+    iconName: "book-open-variant",
     backgroundColor: "#6e5fb8",
   },
   {
     value: 9,
     label: "Others",
-    name: "apps",
+    iconName: "apps",
     backgroundColor: "#b3b2b8",
   },
 ];
@@ -87,6 +98,8 @@ function ListingEditScreen() {
         <AppFormPicker
           name="category"
           categories={categories}
+          PickerItemComponent={CategoryPickerItem}
+          numberOfColumns={3}
           fieldWidth="50%"
           placeholder="Category"
         />

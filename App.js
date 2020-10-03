@@ -8,7 +8,7 @@ import WelcomeScreen from "./app/screens/WelcomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterSceen";
 import ListingEditScreen from "./app/screens/ListingEditScreen";
-import PickerItem from "./app/components/PickerItem";
+import PickerItem from "./app/components/CategoryPickerItem";
 import Screen from "./app/screens/Screen";
 
 export default function App() {
