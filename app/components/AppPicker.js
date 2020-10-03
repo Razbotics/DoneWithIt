@@ -57,20 +57,20 @@ function AppPicker({
             />
           </View>
         </TouchableWithoutFeedback>
-        <FlatList
-          data={items}
-          keyExtractor={(item) => item.value.toString()}
-          ItemSeparatorComponent={ListItemSeparator}
-          renderItem={({ item }) => (
+        <View style={styles.itemsContainer}>
+          {items.map((item) => (
             <PickerItem
+              key={item.value}
               label={item.label}
+              name={item.name}
+              backgroundColor={item.backgroundColor}
               onPress={() => {
                 setModalVisible(false);
                 onSelectItem(item);
               }}
             />
-          )}
-        />
+          ))}
+        </View>
       </Modal>
     </>
   );
@@ -84,6 +84,13 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "center",
     marginVertical: 10,
+  },
+  itemsContainer: {
+    flex: 1,
+    padding: 10,
+    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   closeBtnContainer: {
     backgroundColor: defaultStyles.colors.light,
