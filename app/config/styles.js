@@ -6,7 +6,7 @@ export default {
   text: {
     flexDirection: "row",
     width: "100%",
-    fontSize: 18,
+    fontSize: 16,
     color: colors.dark,
     fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
   },
