@@ -6,46 +6,20 @@ import routes from "../navigation/routes";
 import Screen from "./Screen";
 import listingsApi from "../api/listings";
 import ActivityIndicator from "../components/ActivityIndicator";
+import useApi from "../hooks/useApi";
 
 function ListingsScreen({ navigation }) {
-  const [listings, setListings] = useState([]);
-  const [error, setError] = useState(false);
-  const [retry, setRetry] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const getListingsApi = useApi(listingsApi.getListings);
 
   useEffect(() => {
-    loadListings();
-  }, [retry]);
-
-  const loadListings = async () => {
-    setLoading(true);
-    const response = await listingsApi.getListings();
-    setLoading(false);
-
-    if (!response.ok) return setError(true);
-
-    setError(false);
-    setListings(response.data);
-  };
-
-  const alertWindow = () => {
-    if (error) {
-      setError(false);
-      Alert.alert(
-        "Server Error",
-        "Couldn't get listings from server!",
-        [{ text: "Retry", onPress: () => setRetry(retry + 1) }],
-        { cancelable: false }
-      );
-    }
-  };
+    getListingsApi.request();
+  }, [getListingsApi.retries]);
 
   return (
     <Screen>
       <View style={styles.container}>
-        {alertWindow()}
         <FlatList
-          data={listings}
+          data={getListingsApi.data}
           keyExtractor={(listing) => listing.id.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
@@ -58,7 +32,7 @@ function ListingsScreen({ navigation }) {
           )}
         />
       </View>
-      <ActivityIndicator visible={loading} />
+      <ActivityIndicator visible={getListingsApi.loading} />
     </Screen>
   );
 }
@@ -67,16 +41,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
     backgroundColor: colors.light,
-  },
-  loading: {
-    flex: 1,
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
 
