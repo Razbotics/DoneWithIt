@@ -3,8 +3,9 @@ import { Image, View, StyleSheet, ImageBackground, Text } from "react-native";
 import AppButton from "../components/AppButton";
 import Screen from "./Screen";
 import colors from "../config/colors";
+import routes from "../navigation/routes";
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({ navigation }) => {
   return (
     <Screen>
       <ImageBackground
@@ -24,12 +25,12 @@ const WelcomeScreen = () => {
           <AppButton
             title="Login"
             color={colors.primary}
-            onPress={() => console.log("Login")}
+            onPress={() => navigation.navigate(routes.LOGIN)}
           />
           <AppButton
-            title="Sign Up"
+            title="Register"
             color={colors.secondary}
-            onPress={() => console.log("Register")}
+            onPress={() => navigation.navigate(routes.REGISTER)}
           />
         </View>
       </ImageBackground>

@@ -8,15 +8,16 @@ import WelcomeScreen from "./app/screens/WelcomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterSceen";
 import ListingEditScreen from "./app/screens/ListingEditScreen";
-import PickerItem from "./app/components/CategoryPickerItem";
 import Screen from "./app/screens/Screen";
+import { NavigationContainer } from "@react-navigation/native";
+import AuthNavigator from "./app/navigation/AuthNavigator";
+import navigationTheme from "./app/navigation/navigationTheme";
+import AppNavigator from "./app/navigation/AppNavigator";
 
 export default function App() {
-  return <ListingEditScreen />;
+  return (
+    <NavigationContainer theme={navigationTheme}>
+      <AppNavigator />
+    </NavigationContainer>
+  );
 }
-
-// <AccountScreen
-//   name="Shubhankar Das"
-//   email="razbotics@gmail.com"
-//   image={require("./app/assets/my-image.png")}
-// />

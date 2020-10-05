@@ -4,6 +4,13 @@ import colors from "../config/colors";
 import Screen from "./Screen";
 import Icon from "../components/Icon";
 import { ListItem, ListItemSeparator } from "../components/lists";
+import routes from "../navigation/routes";
+
+const testAccount = {
+  name: "Shubhankar Das",
+  email: "razbotics@gmail.com",
+  image: require("../assets/my-image.png"),
+};
 
 const menuItems = [
   {
@@ -19,10 +26,16 @@ const menuItems = [
       name: "email",
       backgroundColor: colors.secondary,
     },
+    targetScreen: routes.MESSAGES,
   },
 ];
 
-function MyAccountScreen({ image, name, email }) {
+function MyAccountScreen({
+  image = testAccount.image,
+  name = testAccount.name,
+  email = testAccount.email,
+  navigation,
+}) {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
@@ -33,10 +46,11 @@ function MyAccountScreen({ image, name, email }) {
           data={menuItems}
           keyExtractor={(menuItem) => menuItem.title}
           ItemSeparatorComponent={ListItemSeparator}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <ListItem
               title={item.title}
-              onPress={() => {}}
+              onPress={() => navigation.navigate(item.targetScreen)}
               IconComponent={
                 <Icon
                   name={item.icon.name}

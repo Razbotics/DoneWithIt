@@ -10,7 +10,11 @@ function FormLocation({ name }) {
   };
   return (
     <>
-      <AppMapView dragable={true} setMapLocation={setLocation} />
+      <AppMapView
+        dragable={true}
+        customLocation={{ latitude: 15.0, longitude: 72.0 }}
+        setMapLocation={setLocation}
+      />
       <ErrorMessage error={errors[name]} visible={touched[name]} />
     </>
   );

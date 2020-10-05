@@ -23,7 +23,7 @@ const categories = [
   { value: 2, label: "Cars", iconName: "car", backgroundColor: "#fd9644" },
   {
     value: 3,
-    label: "Cameras",
+    label: "Electronix",
     iconName: "camera",
     backgroundColor: "#fed330",
   },
