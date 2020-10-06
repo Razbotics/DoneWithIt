@@ -9,6 +9,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import useApi from "../hooks/useApi";
 
 function ListingsScreen({ navigation }) {
+  const [refreshing, setRefreshing] = useState(false);
   const getListingsApi = useApi(listingsApi.getListings);
 
   useEffect(() => {
@@ -26,10 +27,15 @@ function ListingsScreen({ navigation }) {
             <Card
               title={item.title}
               subTitle={item.price}
-              imageUrl={item.images[0].url}
+              imageUrl={item.images.length ? item.images[0].url : null}
               onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
             />
           )}
+          refreshing={refreshing}
+          onRefresh={async () => {
+            await getListingsApi.request();
+            setRefreshing(false);
+          }}
         />
       </View>
       <ActivityIndicator visible={getListingsApi.loading} />

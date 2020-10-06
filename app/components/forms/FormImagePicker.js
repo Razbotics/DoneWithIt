@@ -8,13 +8,13 @@ function FormImagePicker({ name }) {
   const imageUris = values[name];
 
   const handleAdd = (uri) => {
-    const uris = [...imageUris, uri];
-    setFieldValue(name, uris);
+    const newImageUris = [...imageUris, uri];
+    setFieldValue(name, newImageUris);
   };
 
   const handleRemove = (uri) => {
-    const uris = imageUris.filter((imageUri) => imageUri !== uri);
-    setFieldValue(name, uris);
+    const newImageUris = imageUris.filter((imageUri) => imageUri !== uri);
+    setFieldValue(name, newImageUris);
   };
 
   return (

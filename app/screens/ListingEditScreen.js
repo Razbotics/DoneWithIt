@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import Screen from "./Screen";
+import listingsApi from "../api/listings";
+import useApi from "../hooks/useApi";
 import {
   AppForm,
   AppFormField,
@@ -12,6 +14,7 @@ import {
 import CategoryPickerItem from "../components/CategoryPickerItem";
 import FormImagePicker from "../components/forms/FormImagePicker";
 import FormLocation from "../components/forms/FormLocation";
+import ProgressBar from "../components/ProgressBar";
 
 const categories = [
   {
@@ -70,6 +73,33 @@ const validationSchema = Yup.object().shape({
 });
 
 function ListingEditScreen() {
+  const [percent, setPercent] = useState(0);
+  const [uploadVisible, setUploadVisible] = useState(false);
+  const postListingApi = useApi(listingsApi.postListing);
+
+  const handleOnDone = () => {
+    setUploadVisible(false);
+  };
+
+  const sendData = async (listing, { resetForm }) => {
+    setPercent(0);
+    setUploadVisible(true);
+
+    await postListingApi.request(listing, (progress) => setPercent(progress));
+
+    if (postListingApi.error) {
+      return setUploadVisible(false);
+    }
+    resetForm({
+      images: [],
+      title: "",
+      price: "",
+      category: null,
+      description: "",
+      location: listing.location,
+    });
+  };
+
   return (
     <Screen style={styles.container}>
       <AppForm
@@ -81,54 +111,61 @@ function ListingEditScreen() {
           description: "",
           location: null,
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={sendData}
         validationSchema={validationSchema}
       >
-        <FormImagePicker name="images" />
-        <AppFormField
-          name="title"
-          icon="format-title"
-          maxLength={100}
-          autoCorrect={false}
-          autoCompleteType="off"
-          placeholder="Title"
-        />
-        <AppFormField
-          name="price"
-          maxLength={8}
-          fieldWidth="35%"
-          icon="currency-usd"
-          autoCompleteType="off"
-          keyboardType="numeric"
-          placeholder="Price"
-        />
-        <AppFormPicker
-          name="category"
-          categories={categories}
-          PickerItemComponent={CategoryPickerItem}
-          numberOfColumns={3}
-          fieldWidth="50%"
-          placeholder="Category"
-        />
-        <AppFormField
-          name="description"
-          icon="card-text-outline"
-          autoCorrect={true}
-          multiline
-          numberOfLines={3}
-          maxLength={255}
-          placeholder="Description ..."
-        />
-        <FormLocation name="location" />
-        <SubmitButton title="Post" />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <FormImagePicker name="images" />
+          <AppFormField
+            name="title"
+            icon="format-title"
+            maxLength={100}
+            autoCorrect={false}
+            autoCompleteType="off"
+            placeholder="Title"
+          />
+          <AppFormField
+            name="price"
+            maxLength={8}
+            fieldWidth="35%"
+            icon="currency-usd"
+            autoCompleteType="off"
+            keyboardType="numeric"
+            placeholder="Price"
+          />
+          <AppFormPicker
+            name="category"
+            categories={categories}
+            PickerItemComponent={CategoryPickerItem}
+            numberOfColumns={3}
+            fieldWidth="50%"
+            placeholder="Category"
+          />
+          <AppFormField
+            name="description"
+            icon="card-text-outline"
+            autoCorrect={true}
+            multiline
+            numberOfLines={3}
+            maxLength={255}
+            placeholder="Description ..."
+          />
+          <FormLocation name="location" />
+          <SubmitButton title="Post" />
+        </ScrollView>
       </AppForm>
+      <ProgressBar
+        visible={uploadVisible}
+        percent={percent}
+        onDone={handleOnDone}
+      />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 10,
     padding: 10,
   },
 });

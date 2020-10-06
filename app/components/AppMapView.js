@@ -2,28 +2,18 @@ import React, { useEffect, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, View } from "react-native";
 import * as Location from "expo-location";
-import * as Permission from "expo-permissions";
 
 export default function AppMapView({
   dragable = false,
   setMapLocation,
   customLocation,
+  style,
 }) {
-  const defaultLocation = { latitude: 19.006353, longitude: 73.1184 };
-  const [location, setLocation] = useState(defaultLocation);
-
-  const getLocation = async () => {
-    try {
-      const { granted } = await Permission.getAsync(Permission.LOCATION);
-      if (!granted) return;
-      const {
-        coords: { latitude, longitude },
-      } = await Location.getLastKnownPositionAsync();
-      setLocation({ latitude, longitude });
-    } catch (error) {
-      console.log(error);
-    }
+  const defaultLocation = {
+    latitude: 37.78825,
+    longitude: -122.4324,
   };
+  const [location, setLocation] = useState(defaultLocation);
 
   const getRegion = (loc) => {
     return {
@@ -34,12 +24,29 @@ export default function AppMapView({
     };
   };
 
+  const getLocation = async () => {
+    try {
+      const { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted")
+        return alert("Location permission not granted!");
+      if (dragable) {
+        const {
+          coords: { latitude, longitude },
+        } = await Location.getCurrentPositionAsync({});
+        setLocation({ latitude, longitude });
+      } else {
+        setLocation(customLocation);
+      }
+      setMapLocation(location);
+    } catch (error) {}
+  };
+
   useEffect(() => {
-    dragable ? getLocation() : setLocation(customLocation);
+    getLocation();
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <MapView region={getRegion(location)} style={styles.mapStyle}>
         <Marker
           draggable={dragable}

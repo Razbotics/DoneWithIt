@@ -4,7 +4,7 @@ import AppMapView from "../AppMapView";
 import ErrorMessage from "./ErrorMessage";
 
 function FormLocation({ name }) {
-  const { setFieldValue, errors, touched } = useFormikContext();
+  const { setFieldValue, errors, touched, values } = useFormikContext();
   const setLocation = (location) => {
     setFieldValue(name, location);
   };
@@ -12,7 +12,7 @@ function FormLocation({ name }) {
     <>
       <AppMapView
         dragable={true}
-        customLocation={{ latitude: 15.0, longitude: 72.0 }}
+        customLocation={values[name]}
         setMapLocation={setLocation}
       />
       <ErrorMessage error={errors[name]} visible={touched[name]} />
