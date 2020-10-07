@@ -1,7 +1,9 @@
 import React from "react";
 import { StatusBar, View, StyleSheet } from "react-native";
+
 import Constants from "expo-constants";
 import colors from "../config/colors";
+import NetInfoBar from "../components/NetInfoBar";
 
 function Screen({ children, style }) {
   return (
@@ -12,6 +14,7 @@ function Screen({ children, style }) {
         translucent={true}
       />
       <View style={[styles.childContainer, style]}>{children}</View>
+      <NetInfoBar />
     </View>
   );
 }

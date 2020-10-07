@@ -19,15 +19,23 @@ export default useApi = (apiFunc) => {
 
     setError(false);
     setData(response.data);
+    return response.ok;
   };
 
   const alertWindow = () => {
     if (error) {
-      setError(false);
       Alert.alert(
         "Server Error",
         "Couldn't reach server, check your internet connection",
-        [{ text: "Retry", onPress: () => setRetries(retries + 1) }],
+        [
+          {
+            text: "Retry",
+            onPress: () => {
+              setError(false);
+              setRetries(retries + 1);
+            },
+          },
+        ],
         { cancelable: false }
       );
     }
