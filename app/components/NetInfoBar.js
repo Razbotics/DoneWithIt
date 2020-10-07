@@ -6,14 +6,17 @@ import AppText from "../components/AppText";
 import colors from "../config/colors";
 
 function NetInfoBar() {
-  const { isInternetReachable } = useNetInfo();
-  return !isInternetReachable ? (
-    <View style={styles.netInfo}>
-      <AppText style={{ color: "white", fontSize: 15 }}>
-        No Internet Connection
-      </AppText>
-    </View>
-  ) : null;
+  const netInfo = useNetInfo();
+
+  if (netInfo.type !== "unknown" && netInfo.isInternetReachable === false) {
+    return (
+      <View style={styles.netInfo}>
+        <AppText style={{ color: "white", fontSize: 15 }}>
+          No Internet Connection
+        </AppText>
+      </View>
+    );
+  } else return null;
 }
 
 const styles = StyleSheet.create({
