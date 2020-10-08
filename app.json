@@ -22,6 +22,9 @@
       "backgroundColor": "#fc5c65"
     },
     "assetBundlePatterns": ["**/*"],
+    "android": {
+      "useNextNotificationsApi": true
+    },
     "ios": {
       "supportsTablet": true,
       "requireFullScreen": true

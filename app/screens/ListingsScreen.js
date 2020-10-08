@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Alert } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import Card from "../components/Card";
 import colors from "../config/colors";
 import routes from "../navigation/routes";
@@ -22,32 +22,36 @@ function ListingsScreen({ navigation }) {
   }, [getListingsApi.retries]);
 
   return (
-    <Screen>
-      <View style={styles.container}>
-        <FlatList
-          data={getListingsApi.data}
-          keyExtractor={(listing) => listing.id.toString()}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <Card
-              title={item.title}
-              subTitle={item.price}
-              imageUrl={item.images.length ? item.images[0].url : null}
-              thumbnailUrl={
-                item.images.length ? item.images[0].thumbnailUrl : null
-              }
-              onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
-            />
-          )}
-          refreshing={refreshing}
-          onRefresh={async () => {
-            await getListingsApi.request();
-            setRefreshing(false);
-          }}
-        />
-      </View>
+    <>
       <ActivityIndicator visible={getListingsApi.loading} />
-    </Screen>
+      <Screen>
+        <View style={styles.container}>
+          <FlatList
+            data={getListingsApi.data}
+            keyExtractor={(listing) => listing.id.toString()}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Card
+                title={item.title}
+                subTitle={item.price}
+                imageUrl={item.images.length ? item.images[0].url : null}
+                thumbnailUrl={
+                  item.images.length ? item.images[0].thumbnailUrl : null
+                }
+                onPress={() =>
+                  navigation.navigate(routes.LISTING_DETAILS, item)
+                }
+              />
+            )}
+            refreshing={refreshing}
+            onRefresh={async () => {
+              await getListingsApi.request();
+              setRefreshing(false);
+            }}
+          />
+        </View>
+      </Screen>
+    </>
   );
 }
 

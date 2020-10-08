@@ -12,6 +12,7 @@ import {
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
 import useApi from "../hooks/useApi";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -39,35 +40,41 @@ function LoginScreen() {
   };
 
   return (
-    <Screen style={styles.container}>
-      <Image style={styles.logo} source={require("../assets/logo-red.png")} />
-      <AppForm
-        initialValues={{ email: "", password: "" }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <ErrorMessage error="Invalid email or password" visible={loginFailed} />
-        <AppFormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          autoCompleteType="off"
-          keyboardType="email-address"
-          name="email"
-          icon="email"
-          placeholder="Email"
-        />
-        <AppFormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="password"
-          icon="lock"
-          placeholder="Password"
-          textContentType="password"
-          secureTextEntry
-        />
-        <SubmitButton title="Login" />
-      </AppForm>
-    </Screen>
+    <>
+      <ActivityIndicator visible={loginApi.loading} />
+      <Screen style={styles.container}>
+        <Image style={styles.logo} source={require("../assets/logo-red.png")} />
+        <AppForm
+          initialValues={{ email: "", password: "" }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <ErrorMessage
+            error="Invalid email or password"
+            visible={loginFailed}
+          />
+          <AppFormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoCompleteType="off"
+            keyboardType="email-address"
+            name="email"
+            icon="email"
+            placeholder="Email"
+          />
+          <AppFormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="password"
+            icon="lock"
+            placeholder="Password"
+            textContentType="password"
+            secureTextEntry
+          />
+          <SubmitButton title="Login" />
+        </AppForm>
+      </Screen>
+    </>
   );
 }
 
