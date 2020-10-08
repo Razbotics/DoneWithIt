@@ -12,36 +12,28 @@ export default useApi = (apiFunc) => {
     const response = await apiFunc(...args);
     setLoading(false);
 
-    if (!response.ok) {
-      console.log(response);
-      return setError(true);
-    }
+    if (!response.ok) console.log(response);
 
-    setError(false);
+    setError(!response.ok);
     setData(response.data);
-    return response.ok;
+    return response;
   };
 
   const alertWindow = () => {
-    if (error) {
-      Alert.alert(
-        "Server Error",
-        "Couldn't reach server, check your internet connection",
-        [
-          {
-            text: "Retry",
-            onPress: () => {
-              setError(false);
-              setRetries(retries + 1);
-            },
+    Alert.alert(
+      "Server Error",
+      "Couldn't reach server, check your internet connection",
+      [
+        {
+          text: "Retry",
+          onPress: () => {
+            setRetries(retries + 1);
           },
-        ],
-        { cancelable: false }
-      );
-    }
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
-  alertWindow();
-
-  return { request, data, error, retries, loading };
+  return { request, data, error, retries, loading, alertWindow };
 };

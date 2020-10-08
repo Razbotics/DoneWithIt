@@ -85,11 +85,15 @@ function ListingEditScreen() {
     setPercent(0);
     setUploadVisible(true);
 
-    const ok = await postListingApi.request(listing, (progress) =>
+    const response = await postListingApi.request(listing, (progress) =>
       setPercent(progress)
     );
 
-    if (!ok) return setUploadVisible(false);
+    if (!response.ok) {
+      postListingApi.alertWindow();
+      return setUploadVisible(false);
+    }
+
     resetForm({
       images: [],
       title: "",

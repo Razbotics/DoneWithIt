@@ -7,8 +7,6 @@ import { ListItem, ListItemSeparator } from "../components/lists";
 import routes from "../navigation/routes";
 
 const testAccount = {
-  name: "Shubhankar Das",
-  email: "razbotics@gmail.com",
   image: require("../assets/my-image.png"),
 };
 
@@ -30,16 +28,17 @@ const menuItems = [
   },
 ];
 
-function MyAccountScreen({
-  image = testAccount.image,
-  name = testAccount.name,
-  email = testAccount.email,
-  navigation,
-}) {
+function AccountScreen({ navigation }) {
+  const { user, logOut } = useAuth();
+
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
-        <ListItem title={name} subTitle={email} image={image} />
+        <ListItem
+          title={user.name}
+          subTitle={user.email}
+          image={testAccount.image}
+        />
       </View>
       <View style={styles.container}>
         <FlatList
@@ -64,7 +63,7 @@ function MyAccountScreen({
       <View style={styles.container}>
         <ListItem
           title="Logout"
-          onPress={() => {}}
+          onPress={() => logOut()}
           IconComponent={<Icon name="logout" backgroundColor={colors.yellow} />}
         />
       </View>
@@ -81,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyAccountScreen;
+export default AccountScreen;

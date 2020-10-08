@@ -8,11 +8,6 @@ import NetInfoBar from "../components/NetInfoBar";
 function Screen({ children, style }) {
   return (
     <View tyle={styles.container}>
-      <StatusBar
-        backgroundColor={colors.primary}
-        hidden={false}
-        translucent={true}
-      />
       <View style={[styles.childContainer, style]}>{children}</View>
       <NetInfoBar />
     </View>

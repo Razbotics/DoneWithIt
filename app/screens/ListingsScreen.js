@@ -12,8 +12,13 @@ function ListingsScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const getListingsApi = useApi(listingsApi.getListings);
 
+  const getListings = async () => {
+    const response = await getListingsApi.request();
+    if (!response.ok) getListingsApi.alertWindow();
+  };
+
   useEffect(() => {
-    getListingsApi.request();
+    getListings();
   }, [getListingsApi.retries]);
 
   return (
