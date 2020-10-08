@@ -10,6 +10,7 @@ import {
   SubmitButton,
 } from "../components/forms";
 import authApi from "../api/auth";
+import usersApi from "../api/users";
 import useAuth from "../auth/useAuth";
 import useApi from "../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
@@ -22,7 +23,7 @@ const validationSchema = Yup.object().shape({
 
 function RegisterScreen() {
   const auth = useAuth();
-  const registerApi = useApi(authApi.register);
+  const registerApi = useApi(usersApi.register);
   const loginApi = useApi(authApi.login);
 
   const [errorText, setErrorText] = useState();

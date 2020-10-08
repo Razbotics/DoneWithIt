@@ -1,37 +1,79 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  View,
+  ScrollView,
+} from "react-native";
 import { Image } from "react-native-expo-image-cache";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
 import { ListItem } from "../components/lists";
 import Screen from "./Screen";
+import usersApi from "../api/users";
+import useApi from "../hooks/useApi";
 import AppMapView from "../components/AppMapView";
+import ActivityIndicator from "../components/ActivityIndicator";
+import SendMessage from "../components/SendMessage";
 
 function ListingDetailsScreen({ route }) {
   const listing = route.params;
+  const [userInfo, setUserInfo] = useState();
+  const [iconPressed, setIconPressed] = useState(false);
+  const getUserApi = useApi(usersApi.getUser);
+
+  const getUserInfo = async () => {
+    const response = await getUserApi.request(listing.userId);
+    if (!response.ok) return getUserApi.alertWindow();
+    setUserInfo(response.data);
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const handleSubmit = (message) => {
+    console.log(message);
+    setIconPressed(false);
+  };
+
   return (
-    <Screen>
-      <View style={styles.container}>
-        <Image
-          style={styles.image}
-          tint="light"
-          preview={{ uri: listing.images[0].thumbnailUrl }}
-          uri={listing.images[0].url}
-        />
-        <View style={styles.detailsContainer}>
-          <AppText style={styles.title}>{listing.title}</AppText>
-          <AppText style={styles.price}>{listing.price}$</AppText>
-        </View>
-        <View style={styles.userContainer}>
-          <ListItem
-            image={require("../assets/my-image.png")}
-            title="Shubhankar"
-            subTitle="5 Listings"
+    <>
+      <ActivityIndicator visible={getUserApi.loading} />
+      <Screen>
+        <KeyboardAvoidingView style={styles.container} behavior="position">
+          <Image
+            style={styles.image}
+            tint="light"
+            preview={{ uri: listing.images[0].thumbnailUrl }}
+            uri={listing.images[0].url}
           />
-        </View>
-        <AppMapView customLocation={listing.location} style={{ height: 230 }} />
-      </View>
-    </Screen>
+          <View style={styles.detailsContainer}>
+            <AppText style={styles.title}>{listing.title}</AppText>
+            <AppText style={styles.price}>{listing.price}$</AppText>
+          </View>
+          <View style={styles.userContainer}>
+            <ListItem
+              image={require("../assets/my-image.png")}
+              title={userInfo && userInfo.name}
+              subTitle={userInfo && `${userInfo.listings} Listings`}
+              showChevrons
+              iconName="android-messages"
+              onIconPress={() => setIconPressed(true)}
+            />
+          </View>
+          {iconPressed ? (
+            <SendMessage handleSubmit={handleSubmit} sendFailed={false} />
+          ) : (
+            <AppMapView
+              customLocation={listing.location}
+              style={{ height: 230 }}
+            />
+          )}
+        </KeyboardAvoidingView>
+      </Screen>
+    </>
   );
 }
 
@@ -57,7 +99,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 5,
   },
-  userContainer: {},
+  userContainer: {
+    width: "100%",
+  },
 });
 
 export default ListingDetailsScreen;

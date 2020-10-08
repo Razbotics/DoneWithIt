@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import AppText from "../AppText";
 import defaultStyles from "../../config/styles";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 function ListItem({
   title,
@@ -13,6 +14,8 @@ function ListItem({
   onPress,
   renderRightActions,
   showChevrons,
+  iconName = "chevron-right",
+  onIconPress,
 }) {
   return (
     <Swipeable renderRightActions={renderRightActions}>
@@ -34,12 +37,15 @@ function ListItem({
             )}
           </View>
           {showChevrons && (
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={25}
-              color={defaultStyles.colors.meduim}
-              style={styles.icon}
-            />
+            <TouchableWithoutFeedback onPress={onIconPress}>
+              <View style={styles.icon}>
+                <MaterialCommunityIcons
+                  name={iconName}
+                  size={35}
+                  color={defaultStyles.colors.meduim}
+                />
+              </View>
+            </TouchableWithoutFeedback>
           )}
         </View>
       </TouchableHighlight>
@@ -48,6 +54,8 @@ function ListItem({
 }
 const styles = StyleSheet.create({
   container: {
+    height: 100,
+    alignContent: "center",
     backgroundColor: defaultStyles.colors.white,
     flexDirection: "row",
     padding: 15,
@@ -71,7 +79,9 @@ const styles = StyleSheet.create({
     color: defaultStyles.colors.medium,
   },
   icon: {
-    alignSelf: "center",
+    height: "100%",
+    justifyContent: "center",
+    paddingRight: 10,
   },
 });
 
