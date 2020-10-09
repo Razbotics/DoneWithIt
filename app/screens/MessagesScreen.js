@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import {
@@ -6,58 +6,58 @@ import {
   ListItemDeleteAction,
   ListItemSeparator,
 } from "../components/lists";
-import Screen from "./Screen";
 
-const initialMessages = [
-  {
-    id: 1,
-    title: "T1",
-    description: "D1",
-    image: require("../assets/my-image.png"),
-  },
-  {
-    id: 2,
-    title: "T2",
-    description: "D2",
-    image: require("../assets/my-image.png"),
-  },
-  {
-    id: 3,
-    title: "T3",
-    description: "D3",
-    image: require("../assets/my-image.png"),
-  },
-];
+import useAuth from "../auth/useAuth";
+import useApi from "../hooks/useApi";
+import messageApi from "../api/message";
+import Screen from "./Screen";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 function MessagesScreen() {
-  const [messages, setMessages] = useState(initialMessages);
-  const [refreshing, setRefreshing] = useState(false);
+  const { user } = useAuth();
+  const getMessagesApi = useApi(messageApi.getMessages);
+  const [messages, setMessages] = useState([]);
+
+  const getMessages = async () => {
+    const response = await getMessagesApi.request(user);
+
+    if (!response.ok) getMessagesApi.alertWindow();
+    setMessages(response.data);
+  };
+
+  useEffect(() => {
+    getMessages();
+  }, [getMessagesApi.retries]);
+
   const handleDelete = (message) => {
     setMessages(messages.filter((m) => m.id !== message.id));
   };
 
   return (
-    <Screen>
-      <FlatList
-        data={messages}
-        keyExtractor={(message) => message.id.toString()}
-        renderItem={({ item }) => (
-          <ListItem
-            title={item.title}
-            subTitle={item.description}
-            image={item.image}
-            showChevrons
-            onPress={() => console.log(item.title)}
-            renderRightActions={() => (
-              <ListItemDeleteAction onPress={() => handleDelete(item)} />
-            )}
-          />
-        )}
-        ItemSeparatorComponent={ListItemSeparator}
-        refreshing={refreshing}
-        onRefresh={() => setMessages(initialMessages)}
-      />
-    </Screen>
+    <>
+      <ActivityIndicator visible={getMessagesApi.loading} />
+      <Screen>
+        <FlatList
+          data={messages}
+          keyExtractor={(message) => message.id.toString()}
+          renderItem={({ item }) => (
+            <ListItem
+              title={item.fromUser.name}
+              subTitle={item.content}
+              image={require("../assets/my-image.png")}
+              showChevrons
+              onPress={() => console.log(item.listingId)}
+              renderRightActions={() => (
+                <ListItemDeleteAction onPress={() => handleDelete(item)} />
+              )}
+            />
+          )}
+          ItemSeparatorComponent={ListItemSeparator}
+          refreshing={getMessagesApi.loading}
+          onRefresh={getMessages}
+        />
+      </Screen>
+    </>
   );
 }
 

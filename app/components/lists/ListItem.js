@@ -37,15 +37,15 @@ function ListItem({
             )}
           </View>
           {showChevrons && (
-            <TouchableWithoutFeedback onPress={onIconPress}>
-              <View style={styles.icon}>
+            <View style={styles.icon}>
+              <TouchableWithoutFeedback onPress={onIconPress}>
                 <MaterialCommunityIcons
                   name={iconName}
                   size={35}
                   color={defaultStyles.colors.meduim}
                 />
-              </View>
-            </TouchableWithoutFeedback>
+              </TouchableWithoutFeedback>
+            </View>
           )}
         </View>
       </TouchableHighlight>
@@ -54,8 +54,9 @@ function ListItem({
 }
 const styles = StyleSheet.create({
   container: {
-    height: 100,
-    alignContent: "center",
+    width: "100%",
+    alignItems: "center",
+    alignSelf: "baseline",
     backgroundColor: defaultStyles.colors.white,
     flexDirection: "row",
     padding: 15,
@@ -79,8 +80,6 @@ const styles = StyleSheet.create({
     color: defaultStyles.colors.medium,
   },
   icon: {
-    height: "100%",
-    justifyContent: "center",
     paddingRight: 10,
   },
 });

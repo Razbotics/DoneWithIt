@@ -20,7 +20,7 @@ function SendMessage({ handleSubmit, sendFailed }) {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        <ErrorMessage error="Message send failed" visible={sendFailed} />
+        <ErrorMessage error="Couldn't send message" visible={sendFailed} />
         <AppFormField
           autoCorrect={true}
           autoCompleteType="off"
