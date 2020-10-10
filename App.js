@@ -12,7 +12,9 @@ import usePermissions from "./app/hooks/usePermissions";
 export default function App() {
   const [user, setUser] = useState();
   const [isReady, setIsReady] = useState(false);
-  usePermissions();
+  const success = usePermissions();
+
+  if (!success) return;
 
   const restoreUser = async () => {
     const user = await authStorage.getUser();

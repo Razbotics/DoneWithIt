@@ -11,13 +11,17 @@ export default usePermissions = () => {
       );
       if (status !== "granted") {
         alert("Permissions not granted");
+        return false;
       }
     } catch (error) {
-      console.log(error);
+      if (__DEV__) console.log(error);
+      return false;
     }
   };
 
   useEffect(() => {
     getPermissions();
   }, []);
+
+  return true;
 };
