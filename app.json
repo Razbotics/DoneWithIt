@@ -2,6 +2,7 @@
   "expo": {
     "name": "DoneWithIt",
     "slug": "DoneWithIt",
+    "sdkVersion": "39.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
@@ -21,9 +22,7 @@
       "barStyle": "light-content",
       "backgroundColor": "#fc5c65"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.razbotics.donewithit",
       "versionCode": 1,

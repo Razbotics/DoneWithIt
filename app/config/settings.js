@@ -2,7 +2,7 @@ import Constants from "expo-constants";
 
 const settings = {
   dev: {
-    apiUrl: "https://razbotics.ngrok.io/api",
+    apiUrl: "http://192.168.0.106:9000/api",
   },
   stag: {
     apiUrl: "https://razbotics.ngrok.io/api",
