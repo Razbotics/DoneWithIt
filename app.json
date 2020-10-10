@@ -12,7 +12,7 @@
       "backgroundColor": "#fc5c65"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "enabled": false
     },
     "androidStatusBar": {
       "barStyle": "light-content",
@@ -26,7 +26,13 @@
     "android": {
       "package": "com.razbotics.donewithit",
       "versionCode": 1,
-      "useNextNotificationsApi": true
+      "useNextNotificationsApi": true,
+      "googleServicesFile": "./google-services.json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCyodidKPNaMozLa8AuYTycObf9Kg_Eos0"
+        }
+      }
     },
     "ios": {
       "supportsTablet": true,
