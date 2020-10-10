@@ -28,10 +28,7 @@ function LoginScreen() {
     const response = await loginApi.request(email, password);
 
     if (!response.ok) {
-      if (response.data) setLoginFailed(true);
-      else {
-        loginApi.alertWindow();
-      }
+      if (response.status && response.status < 402) setLoginFailed(true);
       return;
     }
 

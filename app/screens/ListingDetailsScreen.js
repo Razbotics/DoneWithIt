@@ -44,10 +44,7 @@ function ListingDetailsScreen({ route }) {
     });
 
     if (!response.ok) {
-      if (response.data) setSendFailed(true);
-      else {
-        sendMessageApi.alertWindow();
-      }
+      if (response.status && response.status < 402) setSendFailed(true);
       return;
     }
     setIconPressed(false);

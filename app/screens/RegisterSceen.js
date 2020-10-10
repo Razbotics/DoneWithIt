@@ -35,11 +35,9 @@ function RegisterScreen() {
     result = await registerApi.request({ name, email, password });
 
     if (!result.ok) {
-      if (result.data) {
+      if (response.status && response.status < 402) {
         setErrorText(result.data.error);
         setRegisterFailed(true);
-      } else {
-        registerApi.alertWindow();
       }
       return;
     }

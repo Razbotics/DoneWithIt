@@ -15,6 +15,7 @@ import CategoryPickerItem from "../components/CategoryPickerItem";
 import FormImagePicker from "../components/forms/FormImagePicker";
 import FormLocation from "../components/forms/FormLocation";
 import ProgressBar from "../components/ProgressBar";
+import useAuth from "../auth/useAuth";
 
 const categories = [
   {
@@ -90,8 +91,10 @@ function ListingEditScreen() {
     );
 
     if (!response.ok) {
-      postListingApi.alertWindow();
-      return setUploadVisible(false);
+      setUploadVisible(false);
+      if (response.status && response.status < 402)
+        alert("Listing post failed, try again later!");
+      return;
     }
 
     resetForm({

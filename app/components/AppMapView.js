@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, View } from "react-native";
-import * as Location from "expo-location";
+import useLocation from "../hooks/useLocation";
 
 export default function AppMapView({
   dragable = false,
@@ -9,11 +9,11 @@ export default function AppMapView({
   customLocation,
   style,
 }) {
-  const defaultLocation = {
-    latitude: 37.78825,
-    longitude: -122.4324,
-  };
-  const [location, setLocation] = useState(defaultLocation);
+  const location = dragable ? useLocation() : customLocation;
+
+  useEffect(() => {
+    if (dragable) setMapLocation(location);
+  }, [location]);
 
   const getRegion = (loc) => {
     return {
@@ -24,27 +24,6 @@ export default function AppMapView({
     };
   };
 
-  const getLocation = async () => {
-    try {
-      const { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted")
-        return alert("Location permission not granted!");
-      if (dragable) {
-        const {
-          coords: { latitude, longitude },
-        } = await Location.getCurrentPositionAsync({});
-        setLocation({ latitude, longitude });
-      } else {
-        setLocation(customLocation);
-      }
-      setMapLocation(location);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    getLocation();
-  }, []);
-
   return (
     <View style={[styles.container, style]}>
       <MapView region={getRegion(location)} style={styles.mapStyle}>
@@ -53,7 +32,6 @@ export default function AppMapView({
           coordinate={location}
           onDragEnd={(e) => {
             setLocation(e.nativeEvent.coordinate);
-            setMapLocation(location);
           }}
         />
       </MapView>

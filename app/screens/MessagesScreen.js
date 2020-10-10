@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import {
   ListItem,
@@ -12,6 +12,9 @@ import useApi from "../hooks/useApi";
 import messageApi from "../api/message";
 import Screen from "./Screen";
 import ActivityIndicator from "../components/ActivityIndicator";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import colors from "../config/colors";
+import AppText from "../components/AppText";
 
 function MessagesScreen() {
   const { user } = useAuth();
@@ -21,7 +24,7 @@ function MessagesScreen() {
   const getMessages = async () => {
     const response = await getMessagesApi.request(user);
 
-    if (!response.ok) getMessagesApi.alertWindow();
+    if (!response.ok) return;
     setMessages(response.data);
   };
 
@@ -37,30 +40,49 @@ function MessagesScreen() {
     <>
       <ActivityIndicator visible={getMessagesApi.loading} />
       <Screen>
-        <FlatList
-          data={messages}
-          keyExtractor={(message) => message.id.toString()}
-          renderItem={({ item }) => (
-            <ListItem
-              title={item.fromUser.name}
-              subTitle={item.content}
-              image={require("../assets/my-image.png")}
-              showChevrons
-              onPress={() => console.log(item.listingId)}
-              renderRightActions={() => (
-                <ListItemDeleteAction onPress={() => handleDelete(item)} />
-              )}
+        {!messages.length ? (
+          <View style={styles.emptyInbox}>
+            <MaterialCommunityIcons
+              name="inbox"
+              size={80}
+              color={colors.medium}
             />
-          )}
-          ItemSeparatorComponent={ListItemSeparator}
-          refreshing={getMessagesApi.loading}
-          onRefresh={getMessages}
-        />
+            <AppText style={{ marginTop: 10, fontSize: 15 }}>
+              No messages found
+            </AppText>
+          </View>
+        ) : (
+          <FlatList
+            data={messages}
+            keyExtractor={(message) => message.id.toString()}
+            renderItem={({ item }) => (
+              <ListItem
+                title={item.fromUser.name}
+                subTitle={item.content}
+                image={require("../assets/my-image.png")}
+                showChevrons
+                onPress={() => console.log(item.listingId)}
+                renderRightActions={() => (
+                  <ListItemDeleteAction onPress={() => handleDelete(item)} />
+                )}
+              />
+            )}
+            ItemSeparatorComponent={ListItemSeparator}
+            refreshing={getMessagesApi.loading}
+            onRefresh={getMessages}
+          />
+        )}
       </Screen>
     </>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  emptyInbox: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default MessagesScreen;

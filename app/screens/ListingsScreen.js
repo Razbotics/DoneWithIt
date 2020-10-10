@@ -10,11 +10,13 @@ import useApi from "../hooks/useApi";
 
 function ListingsScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
+  const [listings, setListings] = useState([]);
   const getListingsApi = useApi(listingsApi.getListings);
 
   const getListings = async () => {
     const response = await getListingsApi.request();
-    if (!response.ok) getListingsApi.alertWindow();
+    if (!response.ok) return;
+    setListings(response.data);
   };
 
   useEffect(() => {
@@ -27,7 +29,7 @@ function ListingsScreen({ navigation }) {
       <Screen>
         <View style={styles.container}>
           <FlatList
-            data={getListingsApi.data}
+            data={listings}
             keyExtractor={(listing) => listing.id.toString()}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
@@ -57,6 +59,7 @@ function ListingsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 15,
     backgroundColor: colors.light,
   },
