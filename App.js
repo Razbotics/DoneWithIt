@@ -7,10 +7,12 @@ import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
 import { navigationRef } from "./app/navigation/rootNavigation";
 import { AppLoading } from "expo";
+import usePermissions from "./app/hooks/usePermissions";
 
 export default function App() {
   const [user, setUser] = useState();
   const [isReady, setIsReady] = useState(false);
+  usePermissions();
 
   const restoreUser = async () => {
     const user = await authStorage.getUser();

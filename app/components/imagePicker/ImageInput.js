@@ -8,21 +8,9 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
 import defaultStyles from "../../config/styles";
 
 function ImageInput({ imageUri, onChangeImage }) {
-  useEffect(() => {
-    requestPermission();
-  }, []);
-
-  const requestPermission = async () => {
-    try {
-      const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (!granted) alert("You need to enable Permission");
-    } catch (error) {}
-  };
-
   const selectImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({

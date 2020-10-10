@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
 
 export default useLocation = () => {
@@ -8,15 +7,6 @@ export default useLocation = () => {
     longitude: -122.4324,
   };
   const [location, setLocation] = useState(defaultLocation);
-
-  try {
-    const [permission] = Permissions.usePermissions(Permissions.LOCATION);
-
-    if (!permission || permission.status !== "granted")
-      Location.requestPermissionsAsync();
-  } catch (error) {
-    console.log(error);
-  }
 
   const getLocation = async () => {
     try {
