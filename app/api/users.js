@@ -1,7 +1,9 @@
 import client from "./client";
 
-const register = (userInfo) => client.post("/users", userInfo);
-const getUser = (userId) => client.get("/user/" + userId);
+const endpoint = "/users";
+
+const register = (userInfo) => client.post(endpoint, userInfo);
+const getUser = (userId) => client.get(endpoint + "/" + userId);
 
 export default {
   register,

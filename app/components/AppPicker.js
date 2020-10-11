@@ -36,7 +36,7 @@ function AppPicker({
             />
           )}
           {selectedItem ? (
-            <AppText style={styles.text}>{selectedItem.label}</AppText>
+            <AppText style={styles.text}>{selectedItem.name}</AppText>
           ) : (
             <AppText style={styles.placeholder}>{placeholder}</AppText>
           )}
@@ -61,7 +61,7 @@ function AppPicker({
         </TouchableWithoutFeedback>
         <FlatList
           data={items}
-          keyExtractor={(item) => item.value.toString()}
+          keyExtractor={(item) => item._id}
           numColumns={numberOfColumns}
           ItemSeparatorComponent={numberOfColumns == 1 && ListItemSeparator}
           renderItem={({ item }) => (

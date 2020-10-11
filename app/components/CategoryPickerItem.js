@@ -10,11 +10,12 @@ function CategoryPickerItem({ item, onPress }) {
         <Icon
           size={80}
           backgroundColor={item.backgroundColor}
-          name={item.iconName}
+          iconColor={item.color}
+          name={item.icon}
         />
       </TouchableOpacity>
       <AppText numberOfLines={2} style={styles.text}>
-        {item.label}
+        {item.name}
       </AppText>
     </View>
   );

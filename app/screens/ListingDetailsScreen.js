@@ -28,7 +28,7 @@ function ListingDetailsScreen({ route }) {
     const response = await getUserApi.request(listing.userId);
     if (!response.ok) return getUserApi.alertWindow();
     setUserInfo(response.data);
-    user.userId === listing.userId
+    user._id === listing.userId
       ? setMessageIconVisible(false)
       : setMessageIconVisible(true);
   };
@@ -40,7 +40,7 @@ function ListingDetailsScreen({ route }) {
   const handleSubmit = async ({ message }) => {
     const response = await sendMessageApi.request({
       message,
-      listingId: listing.id,
+      listingId: listing._id,
     });
 
     if (!response.ok) {

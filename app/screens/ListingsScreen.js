@@ -30,7 +30,7 @@ function ListingsScreen({ navigation }) {
         <View style={styles.container}>
           <FlatList
             data={listings}
-            keyExtractor={(listing) => listing.id.toString()}
+            keyExtractor={(listing) => listing._id}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <Card

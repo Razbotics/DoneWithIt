@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { ScrollView, StyleSheet } from "react-native";
 import Screen from "./Screen";
 import listingsApi from "../api/listings";
+import categoriesApi from "../api/categories";
 import useApi from "../hooks/useApi";
 import {
   AppForm,
@@ -15,54 +16,7 @@ import CategoryPickerItem from "../components/CategoryPickerItem";
 import FormImagePicker from "../components/forms/FormImagePicker";
 import FormLocation from "../components/forms/FormLocation";
 import ProgressBar from "../components/ProgressBar";
-import useAuth from "../auth/useAuth";
-
-const categories = [
-  {
-    value: 1,
-    label: "Furniture",
-    iconName: "floor-lamp",
-    backgroundColor: "#fc5c65",
-  },
-  { value: 2, label: "Cars", iconName: "car", backgroundColor: "#fd9644" },
-  {
-    value: 3,
-    label: "Electronix",
-    iconName: "camera",
-    backgroundColor: "#fed330",
-  },
-  { value: 4, label: "Games", iconName: "cards", backgroundColor: "#26de81" },
-  {
-    value: 5,
-    label: "Clothing",
-    iconName: "shoe-heel",
-    backgroundColor: "#2bcbba",
-  },
-  {
-    value: 6,
-    label: "Sports",
-    iconName: "basketball",
-    backgroundColor: "#45aaf2",
-  },
-  {
-    value: 7,
-    label: "Movies & Music",
-    iconName: "headphones",
-    backgroundColor: "#4b7bec",
-  },
-  {
-    value: 8,
-    label: "Books",
-    iconName: "book-open-variant",
-    backgroundColor: "#6e5fb8",
-  },
-  {
-    value: 9,
-    label: "Others",
-    iconName: "apps",
-    backgroundColor: "#b3b2b8",
-  },
-];
+import ActivityIndicator from "../components/ActivityIndicator";
 
 const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "Please selelct atleast 1 image"),
@@ -75,8 +29,20 @@ const validationSchema = Yup.object().shape({
 
 function ListingEditScreen() {
   const [percent, setPercent] = useState(0);
+  const [categories, setCategories] = useState([]);
   const [uploadVisible, setUploadVisible] = useState(false);
   const postListingApi = useApi(listingsApi.postListing);
+  const getCategoriesApi = useApi(categoriesApi.getCategories);
+
+  useEffect(() => {
+    getCategories();
+  }, [getCategoriesApi.retries]);
+
+  const getCategories = async () => {
+    const response = await getCategoriesApi.request();
+    if (!response.ok) return;
+    setCategories(response.data);
+  };
 
   const handleOnDone = () => {
     setUploadVisible(false);
@@ -108,65 +74,68 @@ function ListingEditScreen() {
   };
 
   return (
-    <Screen style={styles.container}>
-      <AppForm
-        initialValues={{
-          images: [],
-          title: "",
-          price: "",
-          category: null,
-          description: "",
-          location: null,
-        }}
-        onSubmit={sendData}
-        validationSchema={validationSchema}
-      >
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <FormImagePicker name="images" />
-          <AppFormField
-            name="title"
-            icon="format-title"
-            maxLength={100}
-            autoCorrect={false}
-            autoCompleteType="off"
-            placeholder="Title"
-          />
-          <AppFormField
-            name="price"
-            maxLength={8}
-            fieldWidth="35%"
-            icon="currency-usd"
-            autoCompleteType="off"
-            keyboardType="numeric"
-            placeholder="Price"
-          />
-          <AppFormPicker
-            name="category"
-            categories={categories}
-            PickerItemComponent={CategoryPickerItem}
-            numberOfColumns={3}
-            fieldWidth="50%"
-            placeholder="Category"
-          />
-          <AppFormField
-            name="description"
-            icon="card-text-outline"
-            autoCorrect={true}
-            multiline
-            numberOfLines={3}
-            maxLength={255}
-            placeholder="Description ..."
-          />
-          <FormLocation name="location" />
-          <SubmitButton title="Post" />
-        </ScrollView>
-      </AppForm>
-      <ProgressBar
-        visible={uploadVisible}
-        percent={percent}
-        onDone={handleOnDone}
-      />
-    </Screen>
+    <>
+      <ActivityIndicator visible={getCategoriesApi.loading} />
+      <Screen style={styles.container}>
+        <AppForm
+          initialValues={{
+            images: [],
+            title: "",
+            price: "",
+            category: null,
+            description: "",
+            location: null,
+          }}
+          onSubmit={sendData}
+          validationSchema={validationSchema}
+        >
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <FormImagePicker name="images" />
+            <AppFormField
+              name="title"
+              icon="format-title"
+              maxLength={100}
+              autoCorrect={false}
+              autoCompleteType="off"
+              placeholder="Title"
+            />
+            <AppFormField
+              name="price"
+              maxLength={8}
+              fieldWidth="35%"
+              icon="currency-usd"
+              autoCompleteType="off"
+              keyboardType="numeric"
+              placeholder="Price"
+            />
+            <AppFormPicker
+              name="category"
+              categories={categories}
+              PickerItemComponent={CategoryPickerItem}
+              numberOfColumns={3}
+              fieldWidth="50%"
+              placeholder="Category"
+            />
+            <AppFormField
+              name="description"
+              icon="card-text-outline"
+              autoCorrect={true}
+              multiline
+              numberOfLines={3}
+              maxLength={255}
+              placeholder="Description ..."
+            />
+            <FormLocation name="location" />
+            <SubmitButton title="Post" />
+          </ScrollView>
+        </AppForm>
+        <ProgressBar
+          visible={uploadVisible}
+          percent={percent}
+          onDone={handleOnDone}
+        />
+      </Screen>
+    </>
   );
 }
 

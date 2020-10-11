@@ -31,7 +31,7 @@ export default function AppMapView({
           draggable={dragable}
           coordinate={location}
           onDragEnd={(e) => {
-            setLocation(e.nativeEvent.coordinate);
+            setMapLocation(e.nativeEvent.coordinate);
           }}
         />
       </MapView>

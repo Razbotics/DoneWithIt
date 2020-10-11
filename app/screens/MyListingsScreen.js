@@ -21,7 +21,7 @@ function ListingsScreen({ navigation }) {
     const response = await getListingsApi.request();
     if (!response.ok) return;
     const newListings = response.data.filter(
-      (listing) => user.userId === listing.userId
+      (listing) => user._id === listing.userId
     );
     setListings(newListings);
   };
@@ -49,7 +49,7 @@ function ListingsScreen({ navigation }) {
           <View style={styles.container}>
             <FlatList
               data={listings}
-              keyExtractor={(listing) => listing.id.toString()}
+              keyExtractor={(listing) => listing._id}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
                 <Card

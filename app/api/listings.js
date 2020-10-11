@@ -6,7 +6,7 @@ const postListing = (listing, handleChange) => {
   const data = new FormData();
   data.append("title", listing.title);
   data.append("price", listing.price);
-  data.append("categoryId", listing.category.value);
+  data.append("categoryId", listing.category._id);
   data.append("description", listing.description);
   listing.images.map((image, index) =>
     data.append("images", {
