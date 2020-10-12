@@ -1,9 +1,13 @@
 import client from "./client";
 
-const sendMessage = (message) => client.post("/messages", message);
-const getMessages = (user) => client.get("/messages", user);
+const endpoint = "/messages";
+
+const sendMessage = (message) => client.post(endpoint, message);
+const getMessages = () => client.get(endpoint);
+const deleteMessage = (messageId) => client.delete(endpoint + "/" + messageId);
 
 export default {
   sendMessage,
   getMessages,
+  deleteMessage,
 };

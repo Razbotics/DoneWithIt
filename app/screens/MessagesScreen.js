@@ -7,7 +7,6 @@ import {
   ListItemSeparator,
 } from "../components/lists";
 
-import useAuth from "../auth/useAuth";
 import useApi from "../hooks/useApi";
 import messageApi from "../api/message";
 import Screen from "./Screen";
@@ -17,13 +16,12 @@ import colors from "../config/colors";
 import AppText from "../components/AppText";
 
 function MessagesScreen() {
-  const { user } = useAuth();
   const getMessagesApi = useApi(messageApi.getMessages);
+  const deleteMessagesApi = useApi(messageApi.deleteMessage);
   const [messages, setMessages] = useState([]);
 
   const getMessages = async () => {
-    const response = await getMessagesApi.request(user);
-
+    const response = await getMessagesApi.request();
     if (!response.ok) return;
     setMessages(response.data);
   };
@@ -32,8 +30,10 @@ function MessagesScreen() {
     getMessages();
   }, [getMessagesApi.retries]);
 
-  const handleDelete = (message) => {
-    setMessages(messages.filter((m) => m.id !== message.id));
+  const handleDelete = async (message) => {
+    const response = await deleteMessagesApi.request(message._id);
+    if (!response.ok) return;
+    getMessages();
   };
 
   return (
@@ -54,11 +54,11 @@ function MessagesScreen() {
         ) : (
           <FlatList
             data={messages}
-            keyExtractor={(message) => message.id.toString()}
+            keyExtractor={(message) => message._id}
             renderItem={({ item }) => (
               <ListItem
                 title={item.fromUser.name}
-                subTitle={item.content}
+                subTitle={item.message}
                 image={require("../assets/my-image.png")}
                 showChevrons
                 onPress={() => console.log(item.listingId)}
