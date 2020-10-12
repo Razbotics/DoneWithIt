@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { Image } from "react-native-expo-image-cache";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
@@ -12,8 +17,13 @@ import AppMapView from "../components/AppMapView";
 import ActivityIndicator from "../components/ActivityIndicator";
 import SendMessage from "../components/SendMessage";
 import useAuth from "../auth/useAuth";
+import {
+  ScrollView,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
+import routes from "../navigation/routes";
 
-function ListingDetailsScreen({ route }) {
+function ListingDetailsScreen({ route, navigation }) {
   const listing = route.params;
   const { user } = useAuth();
   const getUserApi = useApi(usersApi.getUser);
@@ -58,12 +68,27 @@ function ListingDetailsScreen({ route }) {
       />
       <Screen>
         <KeyboardAvoidingView style={styles.container} behavior="position">
-          <Image
-            style={styles.image}
-            tint="light"
-            preview={{ uri: listing.images[0].thumbnailUrl }}
-            uri={listing.images[0].url}
-          />
+          <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+            <View style={styles.imagesContainer}>
+              {listing.images.map((image, index) => (
+                <View key={index} style={styles.imageContainer}>
+                  <TouchableWithoutFeedback
+                    onPress={() =>
+                      navigation.navigate(routes.VIEW_IMAGES, image)
+                    }
+                  >
+                    <Image
+                      style={styles.image}
+                      tint="light"
+                      preview={{ uri: image.thumbnailUrl }}
+                      uri={image.url}
+                    />
+                  </TouchableWithoutFeedback>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+
           <View style={styles.detailsContainer}>
             <AppText style={styles.title}>{listing.title}</AppText>
             <AppText style={styles.price}>{listing.price}$</AppText>
@@ -96,9 +121,17 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
   },
+  imagesContainer: {
+    backgroundColor: colors.white,
+    flexDirection: "row",
+  },
+  imageContainer: {
+    width: Dimensions.get("window").width,
+    height: 300,
+  },
   image: {
     width: "100%",
-    height: 300,
+    height: "100%",
   },
   detailsContainer: {
     paddingVertical: 10,

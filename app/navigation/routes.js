@@ -7,5 +7,6 @@ export default Object.freeze({
   MESSAGES: "Messages",
   MYLISTINGS: "MyListings",
   REGISTER: "Register",
+  VIEW_IMAGES: "ViewImages",
   WELCOME: "Welcome",
 });
