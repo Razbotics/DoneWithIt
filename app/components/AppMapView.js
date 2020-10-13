@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, View } from "react-native";
 import useLocation from "../hooks/useLocation";
@@ -9,16 +9,18 @@ export default function AppMapView({
   customLocation,
   style,
 }) {
-  const location = dragable ? useLocation() : customLocation;
+  const [location, setLocation] = useState(null);
+  const initLocation = dragable ? useLocation() : customLocation;
 
   useEffect(() => {
-    if (dragable) setMapLocation(location);
-  }, [location]);
+    setLocation(initLocation);
+    if (dragable) setMapLocation(initLocation);
+  }, [initLocation]);
 
-  const getRegion = (loc) => {
+  const getRegion = () => {
     return {
-      latitude: loc.latitude,
-      longitude: loc.longitude,
+      latitude: location.latitude,
+      longitude: location.longitude,
       latitudeDelta: 0.025,
       longitudeDelta: 0.025,
     };
@@ -26,15 +28,18 @@ export default function AppMapView({
 
   return (
     <View style={[styles.container, style]}>
-      <MapView region={getRegion(location)} style={styles.mapStyle}>
-        <Marker
-          draggable={dragable}
-          coordinate={location}
-          onDragEnd={(e) => {
-            setMapLocation(e.nativeEvent.coordinate);
-          }}
-        />
-      </MapView>
+      {location && (
+        <MapView region={getRegion()} style={styles.mapStyle}>
+          <Marker
+            draggable={dragable}
+            coordinate={location}
+            onDragEnd={(e) => {
+              setMapLocation(e.nativeEvent.coordinate);
+              setLocation(e.nativeEvent.coordinate);
+            }}
+          />
+        </MapView>
+      )}
     </View>
   );
 }

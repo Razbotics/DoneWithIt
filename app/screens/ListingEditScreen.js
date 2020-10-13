@@ -17,6 +17,7 @@ import FormImagePicker from "../components/forms/FormImagePicker";
 import FormLocation from "../components/forms/FormLocation";
 import ProgressBar from "../components/ProgressBar";
 import ActivityIndicator from "../components/ActivityIndicator";
+import useLocation from "../hooks/useLocation";
 
 const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "Please selelct atleast 1 image"),
@@ -29,6 +30,7 @@ const validationSchema = Yup.object().shape({
 
 function ListingEditScreen() {
   const [percent, setPercent] = useState(0);
+  const location = useLocation();
   const [categories, setCategories] = useState([]);
   const [uploadVisible, setUploadVisible] = useState(false);
   const postListingApi = useApi(listingsApi.postListing);
@@ -63,14 +65,7 @@ function ListingEditScreen() {
       return;
     }
 
-    resetForm({
-      images: [],
-      title: "",
-      price: "",
-      category: null,
-      description: "",
-      location: listing.location,
-    });
+    resetForm();
   };
 
   return (
@@ -84,7 +79,7 @@ function ListingEditScreen() {
             price: "",
             category: null,
             description: "",
-            location: null,
+            location: location,
           }}
           onSubmit={sendData}
           validationSchema={validationSchema}

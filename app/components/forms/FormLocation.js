@@ -5,6 +5,7 @@ import ErrorMessage from "./ErrorMessage";
 
 function FormLocation({ name }) {
   const { setFieldValue, errors, touched, values } = useFormikContext();
+
   const setLocation = (location) => {
     setFieldValue(name, location);
   };
