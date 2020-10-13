@@ -23,6 +23,7 @@
       "backgroundColor": "#fc5c65"
     },
     "assetBundlePatterns": ["**/*"],
+
     "android": {
       "package": "com.razbotics.donewithit",
       "versionCode": 1,
@@ -32,7 +33,13 @@
         "googleMaps": {
           "apiKey": "AIzaSyCyodidKPNaMozLa8AuYTycObf9Kg_Eos0"
         }
-      }
+      },
+      "permissions": 
+      ["ACCESS_COARSE_LOCATION", 
+        "ACCESS_FINE_LOCATION", 
+        "READ_EXTERNAL_STORAGE", 
+        "VIBRATE", 
+        "CAMERA"]
     },
     "ios": {
       "supportsTablet": true,
