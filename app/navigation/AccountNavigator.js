@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import MyAccountScreen from "../screens/AccountScreen";
 import MessagesScreen from "../screens/MessagesScreen";
 import MyListingsScreen from "../screens/MyListingsScreen";
+import ListingDetailsScreen from "../screens/ListingDetailsScreen";
 import routes from "./routes";
 
 const Stack = createStackNavigator();
@@ -11,6 +12,10 @@ const AccountNavigator = () => {
     <Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
       <Stack.Screen name={routes.ACCOUNT} component={MyAccountScreen} />
       <Stack.Screen name={routes.MYLISTINGS} component={MyListingsScreen} />
+      <Stack.Screen
+        name={routes.LISTING_DETAILS}
+        component={ListingDetailsScreen}
+      />
       <Stack.Screen name={routes.MESSAGES} component={MessagesScreen} />
     </Stack.Navigator>
   );

@@ -10,6 +10,7 @@ import useApi from "../hooks/useApi";
 
 function ListingsScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
+  const [update, setUpdate] = useState(0);
   const [listings, setListings] = useState([]);
   const getListingsApi = useApi(listingsApi.getListings);
 
@@ -21,7 +22,7 @@ function ListingsScreen({ navigation }) {
 
   useEffect(() => {
     getListings();
-  }, [getListingsApi.retries]);
+  }, [getListingsApi.retries, update]);
 
   return (
     <>
@@ -47,7 +48,7 @@ function ListingsScreen({ navigation }) {
             )}
             refreshing={refreshing}
             onRefresh={async () => {
-              await getListingsApi.request();
+              setUpdate(update + 1);
               setRefreshing(false);
             }}
           />

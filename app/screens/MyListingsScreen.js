@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, Alert } from "react-native";
 import Card from "../components/Card";
 import colors from "../config/colors";
 import routes from "../navigation/routes";
@@ -14,8 +14,10 @@ import AppText from "../components/AppText";
 function ListingsScreen({ navigation }) {
   const { user } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
+  const [update, setUpdate] = useState(0);
   const [listings, setListings] = useState([]);
   const getListingsApi = useApi(listingsApi.getListings);
+  const deleteListingApi = useApi(listingsApi.deleteListing);
 
   const getListings = async () => {
     const response = await getListingsApi.request();
@@ -26,9 +28,30 @@ function ListingsScreen({ navigation }) {
     setListings(newListings);
   };
 
+  const deleteListing = async (listingId) => {
+    const response = await deleteListingApi.request(listingId);
+    if (!response.ok) return;
+    setUpdate(update + 1);
+  };
+
+  const handleOnDelete = (listingId) => {
+    Alert.alert("Delete", "Are you sure, you want to delete this listing?", [
+      {
+        text: "Yes",
+        onPress: () => deleteListing(listingId),
+      },
+      {
+        text: "Cancel",
+        onPress: () => {
+          return null;
+        },
+      },
+    ]);
+  };
+
   useEffect(() => {
     getListings();
-  }, [getListingsApi.retries]);
+  }, [getListingsApi.retries, update]);
 
   return (
     <>
@@ -62,11 +85,13 @@ function ListingsScreen({ navigation }) {
                   onPress={() =>
                     navigation.navigate(routes.LISTING_DETAILS, item)
                   }
+                  showDelete={true}
+                  onDeletePress={() => handleOnDelete(item._id)}
                 />
               )}
               refreshing={refreshing}
               onRefresh={async () => {
-                await getListingsApi.request();
+                setUpdate(update + 1);
                 setRefreshing(false);
               }}
             />
