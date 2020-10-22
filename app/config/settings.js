@@ -8,7 +8,7 @@ const settings = {
     apiUrl: "https://razbotics.ngrok.io/api",
   },
   prod: {
-    apiUrl: "http://3.138.179.227:9500/api",
+    apiUrl: "http://3.138.222.105/api",
   },
 };
 
